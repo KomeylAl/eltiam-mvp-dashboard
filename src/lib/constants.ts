@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://eltiam.ebrazclinic.ir/api";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://api.eltiamcare.ir/api";
 
 export const Q_NUMBER_LABELS: Record<number, string> = {
   0: "بار",
