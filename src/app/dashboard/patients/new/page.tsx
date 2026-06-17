@@ -10,13 +10,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { createPatient } from "@/lib/api/patients";
 import { useAuthStore } from "@/stores/auth-store";
-import type { CreatePatientPayload } from "@/types/api";
+import type { CreatePatientPayload, UpdatePatientPayload } from "@/types/api";
 
 export default function NewPatientPage() {
   const router = useRouter();
   const token = useAuthStore((s) => s.token);
 
-  const handleSubmit = async (data: CreatePatientPayload) => {
+  const handleSubmit = async (data: CreatePatientPayload | UpdatePatientPayload) => {
     if (!token) return;
     await createPatient(token, data as CreatePatientPayload);
     toast.success("بیمار با موفقیت ثبت شد");
