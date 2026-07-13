@@ -1,6 +1,13 @@
 import { apiClient } from "./client";
-import type { RiskAlert } from "@/types/api";
+import { buildQueryString } from "@/lib/utils";
+import type { PaginatedResponse, PaginationParams, RiskAlert } from "@/types/api";
 
-export async function getAlerts(token: string): Promise<{ data: RiskAlert[] }> {
-  return apiClient<{ data: RiskAlert[] }>("/therapist/alerts", { token });
+export async function getAlerts(
+  token: string,
+  params?: PaginationParams
+): Promise<PaginatedResponse<RiskAlert>> {
+  return apiClient<PaginatedResponse<RiskAlert>>(
+    `/therapist/alerts${buildQueryString(params ?? {})}`,
+    { token }
+  );
 }

@@ -36,9 +36,9 @@ export function DashboardSidebar() {
 
   const NavContent = () => (
     <>
-      <div className="flex items-center gap-3 px-4 py-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-          <Heart className="h-5 w-5 text-primary" />
+      <div className="flex items-center gap-3 px-4 py-6 bg-gradient-to-l from-primary/10 via-teal-50/50 to-transparent">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-teal-600 shadow-md">
+          <Heart className="h-5 w-5 text-white" />
         </div>
         <div>
           <p className="font-bold text-foreground">التیام</p>
@@ -61,10 +61,10 @@ export function DashboardSidebar() {
               href={href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
                 isActive
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-gradient-to-l from-primary/15 to-teal-50 text-primary shadow-sm"
+                  : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -77,7 +77,7 @@ export function DashboardSidebar() {
       <Separator />
 
       <div className="p-4 space-y-3">
-        <div className="rounded-lg bg-muted/50 px-3 py-2.5">
+        <div className="rounded-xl bg-gradient-to-l from-muted/60 to-teal-50/40 px-3 py-2.5 border border-primary/10">
           <p className="text-sm font-medium truncate">{user?.name}</p>
           <p className="text-xs text-muted-foreground truncate" dir="ltr">
             {user?.phone}
@@ -120,7 +120,7 @@ export function DashboardSidebar() {
 
       <aside
         className={cn(
-          "fixed inset-y-0 right-0 z-40 flex w-64 flex-col border-l bg-background transition-transform lg:translate-x-0",
+          "fixed inset-y-0 right-0 z-40 flex w-64 flex-col border-l border-primary/10 bg-white/90 backdrop-blur-md shadow-xl transition-transform lg:translate-x-0",
           mobileOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         )}
       >
@@ -140,11 +140,13 @@ export function DashboardHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-l from-primary to-teal-700 bg-clip-text text-transparent">
+          {title}
+        </h1>
         {description && (
-          <p className="text-muted-foreground mt-1">{description}</p>
+          <p className="text-muted-foreground mt-1.5">{description}</p>
         )}
       </div>
       {action}

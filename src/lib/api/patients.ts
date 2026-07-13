@@ -1,8 +1,11 @@
 import { apiClient } from "./client";
+import { buildQueryString } from "@/lib/utils";
 import type {
   CreatePatientPayload,
   Intervention,
   Measurement,
+  PaginatedResponse,
+  PaginationParams,
   Patient,
   SafetyPlan,
   SocialProblem,
@@ -10,8 +13,14 @@ import type {
   WordGame,
 } from "@/types/api";
 
-export async function getPatients(token: string): Promise<{ data: Patient[] }> {
-  return apiClient<{ data: Patient[] }>("/therapist/patients", { token });
+export async function getPatients(
+  token: string,
+  params?: PaginationParams
+): Promise<PaginatedResponse<Patient>> {
+  return apiClient<PaginatedResponse<Patient>>(
+    `/therapist/patients${buildQueryString(params ?? {})}`,
+    { token }
+  );
 }
 
 export async function getPatient(
@@ -56,50 +65,55 @@ export async function deletePatient(
 
 export async function getMeasurements(
   token: string,
-  patientId: number
-): Promise<{ data: Measurement[] }> {
-  return apiClient<{ data: Measurement[] }>(
-    `/therapist/patients/${patientId}/measurements`,
+  patientId: number,
+  params?: PaginationParams
+): Promise<PaginatedResponse<Measurement>> {
+  return apiClient<PaginatedResponse<Measurement>>(
+    `/therapist/patients/${patientId}/measurements${buildQueryString(params ?? {})}`,
     { token }
   );
 }
 
 export async function getInterventions(
   token: string,
-  patientId: number
-): Promise<{ data: Intervention[] }> {
-  return apiClient<{ data: Intervention[] }>(
-    `/therapist/patients/${patientId}/interventions`,
+  patientId: number,
+  params?: PaginationParams
+): Promise<PaginatedResponse<Intervention>> {
+  return apiClient<PaginatedResponse<Intervention>>(
+    `/therapist/patients/${patientId}/interventions${buildQueryString(params ?? {})}`,
     { token }
   );
 }
 
 export async function getSocialProblems(
   token: string,
-  patientId: number
-): Promise<{ data: SocialProblem[] }> {
-  return apiClient<{ data: SocialProblem[] }>(
-    `/therapist/patients/${patientId}/social-problems`,
+  patientId: number,
+  params?: PaginationParams
+): Promise<PaginatedResponse<SocialProblem>> {
+  return apiClient<PaginatedResponse<SocialProblem>>(
+    `/therapist/patients/${patientId}/social-problems${buildQueryString(params ?? {})}`,
     { token }
   );
 }
 
 export async function getWordGames(
   token: string,
-  patientId: number
-): Promise<{ data: WordGame[] }> {
-  return apiClient<{ data: WordGame[] }>(
-    `/therapist/patients/${patientId}/word-games`,
+  patientId: number,
+  params?: PaginationParams
+): Promise<PaginatedResponse<WordGame>> {
+  return apiClient<PaginatedResponse<WordGame>>(
+    `/therapist/patients/${patientId}/word-games${buildQueryString(params ?? {})}`,
     { token }
   );
 }
 
 export async function getSafetyPlans(
   token: string,
-  patientId: number
-): Promise<{ data: SafetyPlan[] }> {
-  return apiClient<{ data: SafetyPlan[] }>(
-    `/therapist/patients/${patientId}/safety-plans`,
+  patientId: number,
+  params?: PaginationParams
+): Promise<PaginatedResponse<SafetyPlan>> {
+  return apiClient<PaginatedResponse<SafetyPlan>>(
+    `/therapist/patients/${patientId}/safety-plans${buildQueryString(params ?? {})}`,
     { token }
   );
 }

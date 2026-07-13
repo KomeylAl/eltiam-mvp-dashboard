@@ -22,10 +22,10 @@ export function WordGamesList({ items }: WordGamesListProps) {
       {items.map((game) => (
         <div
           key={game.id}
-          className="flex items-center justify-between rounded-lg border px-4 py-3"
+          className="flex items-center justify-between rounded-xl border border-primary/10 bg-gradient-to-l from-white to-amber-50/30 px-4 py-3 hover:shadow-sm transition-shadow"
         >
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-100 to-orange-100">
               <Trophy className="h-4 w-4 text-amber-600" />
             </div>
             <div>

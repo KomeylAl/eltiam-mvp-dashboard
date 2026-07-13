@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
+  --background: #f4fbf9;
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
   --primary: #0d9488;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
+  --secondary: #ecfdf5;
   --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
+  --muted: #f0fdfa;
   --muted-foreground: #64748b;
-  --accent: #f0fdfa;
+  --accent: #ccfbf1;
   --accent-foreground: #0f766e;
   --destructive: #dc2626;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
+  --border: #d1eae4;
+  --input: #d1eae4;
   --ring: #0d9488;
   --radius: 0.75rem;
 }
@@ -48,6 +48,14 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+.dashboard-bg {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(at 100% 0%, rgba(13, 148, 136, 0.08) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(20, 184, 166, 0.06) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(204, 251, 241, 0.4) 0px, transparent 60%);
 }
 
 @keyframes fade-in {

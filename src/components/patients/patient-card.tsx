@@ -13,10 +13,10 @@ interface PatientCardProps {
 export function PatientCard({ patient }: PatientCardProps) {
   return (
     <Link href={`/dashboard/patients/${patient.id}`}>
-      <Card className="transition-all hover:shadow-md hover:border-primary/20 cursor-pointer">
+      <Card className="transition-all hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/30 cursor-pointer border-primary/10 bg-gradient-to-br from-white to-teal-50/30">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-teal-100">
               <User className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0 flex-1">

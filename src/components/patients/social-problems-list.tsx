@@ -20,7 +20,7 @@ export function SocialProblemsList({ items }: SocialProblemsListProps) {
   return (
     <div className="space-y-4">
       {items.map((item) => (
-        <Card key={item.id}>
+        <Card key={item.id} className="border-primary/10 bg-gradient-to-br from-white to-teal-50/20 hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="text-base">{item.problem}</CardTitle>
             <p className="text-xs text-muted-foreground">

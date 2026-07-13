@@ -22,8 +22,10 @@ export function AlertCard({ alert, compact }: AlertCardProps) {
   return (
     <Card
       className={cn(
-        "transition-colors hover:shadow-md",
-        isCritical && "border-destructive/30 bg-destructive/5"
+        "transition-all hover:shadow-lg hover:-translate-y-0.5 border-primary/10",
+        isCritical
+          ? "border-destructive/30 bg-gradient-to-l from-destructive/5 to-rose-50/50"
+          : "bg-gradient-to-l from-amber-50/50 to-orange-50/30 border-amber-200/40"
       )}
     >
       <CardContent className={cn("p-4", compact && "p-3")}>

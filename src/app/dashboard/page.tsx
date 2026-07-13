@@ -12,6 +12,7 @@ import { EmptyState, ErrorState } from "@/components/shared/empty-state";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { getAlerts } from "@/lib/api/alerts";
 import { getPatients } from "@/lib/api/patients";
+import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth-store";
 import type { Patient, RiskAlert } from "@/types/api";
 
@@ -21,6 +22,8 @@ export default function DashboardPage() {
 
   const [patients, setPatients] = useState<Patient[]>([]);
   const [alerts, setAlerts] = useState<RiskAlert[]>([]);
+  const [patientTotal, setPatientTotal] = useState(0);
+  const [alertTotal, setAlertTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,11 +33,13 @@ export default function DashboardPage() {
     async function load() {
       try {
         const [patientsRes, alertsRes] = await Promise.all([
-          getPatients(token!),
-          getAlerts(token!),
+          getPatients(token!, { page: 1, per_page: 5 }),
+          getAlerts(token!, { page: 1, per_page: 5 }),
         ]);
         setPatients(patientsRes.data);
         setAlerts(alertsRes.data);
+        setPatientTotal(patientsRes.meta.total);
+        setAlertTotal(alertsRes.meta.total);
       } catch {
         setError("خطا در بارگذاری اطلاعات");
       } finally {
@@ -46,7 +51,9 @@ export default function DashboardPage() {
   }, [token]);
 
   const unreviewedAlerts = alerts.filter((a) => !a.reviewed_at);
-  const criticalCount = unreviewedAlerts.filter((a) => a.risk_level === 4).length;
+  const criticalCount = alerts.filter(
+    (a) => a.risk_level === 4 && !a.reviewed_at
+  ).length;
 
   if (loading) return <LoadingSpinner text="در حال بارگذاری داشبورد..." />;
   if (error) return <ErrorState message={error} />;
@@ -62,15 +69,19 @@ export default function DashboardPage() {
         <StatCard
           icon={Users}
           label="تعداد بیماران"
-          value={patients.length.toLocaleString("fa-IR")}
+          value={patientTotal.toLocaleString("fa-IR")}
           href="/dashboard/patients"
+          gradient="from-teal-500/10 via-primary/5 to-emerald-50"
+          iconColor="text-primary"
         />
         <StatCard
           icon={AlertTriangle}
           label="هشدارهای فعال"
-          value={unreviewedAlerts.length.toLocaleString("fa-IR")}
+          value={alertTotal.toLocaleString("fa-IR")}
           href="/dashboard/alerts"
-          highlight={unreviewedAlerts.length > 0}
+          highlight={alertTotal > 0}
+          gradient="from-amber-500/10 via-amber-50/50 to-orange-50"
+          iconColor="text-amber-600"
         />
         <StatCard
           icon={AlertTriangle}
@@ -79,11 +90,13 @@ export default function DashboardPage() {
           href="/dashboard/alerts"
           highlight={criticalCount > 0}
           destructive
+          gradient="from-red-500/10 via-destructive/5 to-rose-50"
+          iconColor="text-destructive"
         />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section>
+        <section className="rounded-2xl border border-primary/10 bg-gradient-to-br from-white via-white to-teal-50/40 p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">هشدارهای اخیر</h2>
             <Button variant="ghost" size="sm" asChild>
@@ -97,17 +110,17 @@ export default function DashboardPage() {
             />
           ) : (
             <div className="space-y-3">
-              {unreviewedAlerts.slice(0, 5).map((alert) => (
+              {unreviewedAlerts.map((alert) => (
                 <AlertCard key={alert.id} alert={alert} compact />
               ))}
             </div>
           )}
         </section>
 
-        <section>
+        <section className="rounded-2xl border border-primary/10 bg-gradient-to-br from-white via-white to-emerald-50/40 p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">بیماران</h2>
-            <Button size="sm" asChild>
+            <Button size="sm" asChild className="bg-gradient-to-l from-primary to-teal-600">
               <Link href="/dashboard/patients/new">
                 <Plus className="h-4 w-4" />
                 بیمار جدید
@@ -121,7 +134,7 @@ export default function DashboardPage() {
             />
           ) : (
             <div className="space-y-3">
-              {patients.slice(0, 5).map((patient) => (
+              {patients.map((patient) => (
                 <PatientCard key={patient.id} patient={patient} />
               ))}
             </div>
@@ -139,6 +152,8 @@ function StatCard({
   href,
   highlight,
   destructive,
+  gradient,
+  iconColor,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
@@ -146,34 +161,46 @@ function StatCard({
   href: string;
   highlight?: boolean;
   destructive?: boolean;
+  gradient: string;
+  iconColor: string;
 }) {
   return (
     <Link href={href}>
       <Card
-        className={`transition-all hover:shadow-md cursor-pointer ${
-          highlight
-            ? destructive
-              ? "border-destructive/30 bg-destructive/5"
-              : "border-amber-200 bg-amber-50/50"
-            : ""
-        }`}
+        className={cn(
+          "transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer overflow-hidden border-primary/10 bg-gradient-to-br",
+          gradient,
+          highlight && destructive && "border-destructive/30",
+          highlight && !destructive && "border-amber-200/60"
+        )}
       >
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
             {label}
           </CardTitle>
-          <Icon
-            className={`h-4 w-4 ${
+          <div
+            className={cn(
+              "flex h-9 w-9 items-center justify-center rounded-xl",
               destructive && highlight
-                ? "text-destructive"
+                ? "bg-destructive/10"
                 : highlight
-                  ? "text-amber-600"
-                  : "text-muted-foreground"
-            }`}
-          />
+                  ? "bg-amber-100"
+                  : "bg-primary/10"
+            )}
+          >
+            <Icon className={cn("h-4 w-4", iconColor)} />
+          </div>
         </CardHeader>
         <CardContent>
-          <p className="text-3xl font-bold">{value}</p>
+          <p
+            className={cn(
+              "text-3xl font-bold",
+              destructive && highlight && "text-destructive",
+              highlight && !destructive && "text-amber-700"
+            )}
+          >
+            {value}
+          </p>
         </CardContent>
       </Card>
     </Link>

@@ -20,10 +20,10 @@ export function AssessmentTable({
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded-xl border border-primary/10">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b text-muted-foreground">
+          <tr className="border-b bg-gradient-to-l from-primary/5 to-teal-50/50 text-muted-foreground">
             <th className="pb-3 pr-4 text-right font-medium">تاریخ</th>
             <th className="pb-3 pr-4 text-right font-medium">سؤال</th>
             <th className="pb-3 text-right font-medium">پاسخ</th>
@@ -36,7 +36,7 @@ export function AssessmentTable({
               <tr
                 key={item.id}
                 className={cn(
-                  "border-b last:border-0",
+                  "border-b last:border-0 transition-colors hover:bg-primary/5",
                   isRisk && "bg-destructive/5"
                 )}
               >

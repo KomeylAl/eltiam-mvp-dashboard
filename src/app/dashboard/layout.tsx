@@ -10,7 +10,7 @@ export default function DashboardLayout({
 }) {
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-muted/30">
+      <div className="min-h-screen dashboard-bg">
         <DashboardSidebar />
         <main className="lg:mr-64 pt-16 lg:pt-0">
           <div className="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">{children}</div>

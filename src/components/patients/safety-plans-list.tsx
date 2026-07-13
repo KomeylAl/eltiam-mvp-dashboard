@@ -32,7 +32,7 @@ export function SafetyPlansList({ items }: SafetyPlansListProps) {
   return (
     <div className="space-y-4">
       {items.map((plan) => (
-        <Card key={plan.id}>
+        <Card key={plan.id} className="border-primary/10 bg-gradient-to-br from-white to-emerald-50/30 hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="text-base">برنامه ایمنی</CardTitle>
             <p className="text-xs text-muted-foreground">
