@@ -1,29 +1,9 @@
 services:
-  migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: migrator
-
-    command: npx prisma migrate deploy
-
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-
-    networks:
-      - infrastructure
-
-    restart: "no"
-
   app:
     build:
       context: .
       dockerfile: Dockerfile
       target: runner
-
-    depends_on:
-      migrate:
-        condition: service_completed_successfully
 
     restart: unless-stopped
 
